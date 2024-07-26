@@ -72,13 +72,14 @@ const daysData = [
 const days = document.getElementById("days");
 const activities = document.getElementById("activities");
 
-getDayInterval(60 * 6, MINUTES_IN_DAY);
-/* begin & end interval to show the activities */
+getDayInterval(60 * 6, 60 * 18);//MINUTES_IN_DAY);
+// begin & end interval to show the activities
 function getDayInterval(beginInterval, endInterval) {
     const intervalInMinutes = endInterval - beginInterval;
 
     const daysDataInterval = JSON.parse(JSON.stringify(daysData));
     for (const dayData of daysDataInterval) {
+        // remove everything before beginInterval
         let ended = false;
         while (!ended) {
             if (dayData.activities[0].endMinutes <= beginInterval) {
@@ -88,7 +89,21 @@ function getDayInterval(beginInterval, endInterval) {
                 dayData.activities[0].durationMinutes
                     = dayData.activities[0].endMinutes
                     - dayData.activities[0].beginMinutes;
-                console.log(dayData.activities);
+                ended = true;
+            }
+        }
+
+        // remove everything after endInterval
+        ended = false;
+        while (!ended) {
+            const len = dayData.activities.length;
+            if (dayData.activities[len-1].beginMinutes >= endInterval) {
+                dayData.activities.pop();
+            } else {
+                dayData.activities[len-1].endMinutes = endInterval;
+                dayData.activities[len-1].durationMinutes
+                    = dayData.activities[len-1].endMinutes
+                    - dayData.activities[len-1].beginMinutes;
                 ended = true;
             }
         }
