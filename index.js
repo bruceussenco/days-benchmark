@@ -6,7 +6,6 @@ class ActivityType {
 }
 
 const activityTypes = [
-    new ActivityType("pause", "#fff0"),
     new ActivityType("study", "#07f"),
     new ActivityType("gym", "#f40"),
     new ActivityType("meditation", "#0f4"),
@@ -58,18 +57,14 @@ const MINUTES_IN_DAY = 24 * 60;
 
 const daysData = [
     new DayData("12/12", [
-        new Activity(0, "00:00", "09:00"),
-        new Activity(1, "09:00", "10:00"),
-        new Activity(1, "10:15", "11:15"),
-        new Activity(2, "12:00", "13:00"),
-        new Activity(3, "14:05", "14:40"),
-        new Activity(1, "14:40", "15:30"),
-        new Activity(0, "15:30", "23:59"),
+        new Activity(0, "09:00", "10:00"),
+        new Activity(0, "10:15", "11:15"),
+        new Activity(1, "12:00", "13:00"),
+        new Activity(2, "14:05", "14:40"),
+        new Activity(0, "14:40", "15:30"),
     ]),
     new DayData("14/12", [
-        new Activity(0, "00:00", "09:00"),
-        new Activity(1, "09:00", "11:00"),
-        new Activity(0, "11:00", "23:59"),
+        new Activity(0, "09:00", "11:00"),
     ]),
 ];
 
@@ -89,10 +84,12 @@ function getDayInterval(beginInterval, endInterval) {
             if (dayData.activities[0].endMinutes <= beginInterval) {
                 dayData.activities.shift();
             } else {
-                dayData.activities[0].beginMinutes = beginInterval;
-                dayData.activities[0].durationMinutes
-                    = dayData.activities[0].endMinutes
-                    - dayData.activities[0].beginMinutes;
+                if (dayData.activities[0].beginMinutes < beginInterval) {
+                    dayData.activities[0].beginMinutes = beginInterval;
+                    dayData.activities[0].durationMinutes
+                        = dayData.activities[0].endMinutes
+                        - dayData.activities[0].beginMinutes;
+                }
                 ended = true;
             }
         }
@@ -104,10 +101,12 @@ function getDayInterval(beginInterval, endInterval) {
             if (dayData.activities[len-1].beginMinutes >= endInterval) {
                 dayData.activities.pop();
             } else {
-                dayData.activities[len-1].endMinutes = endInterval;
-                dayData.activities[len-1].durationMinutes
-                    = dayData.activities[len-1].endMinutes
-                    - dayData.activities[len-1].beginMinutes;
+                if (dayData.activities[len-1].endMinutes > endInterval) {
+                    dayData.activities[len-1].endMinutes = endInterval;
+                    dayData.activities[len-1].durationMinutes
+                        = dayData.activities[len-1].endMinutes
+                        - dayData.activities[len-1].beginMinutes;
+                }
                 ended = true;
             }
         }
@@ -125,6 +124,7 @@ function getDayInterval(beginInterval, endInterval) {
             const actDiv = document.createElement("div");
             const w = activity.durationMinutes / intervalMinutes;
             const x = (activity.beginMinutes - beginInterval) / intervalMinutes;
+            console.log("(" + activity.beginMinutes + " - " + beginInterval + ") / " + intervalMinutes + " = " + x);
 
             actDiv.style = `
             left: ${100*x}%;
