@@ -6,8 +6,10 @@ class ActivityType {
 }
 
 const activityTypes = [
-    new ActivityType("pause", "#fff"),
-    new ActivityType("programming", "#00f"),
+    new ActivityType("pause", "#fff0"),
+    new ActivityType("study", "#07f"),
+    new ActivityType("gym", "#f40"),
+    new ActivityType("meditation", "#0f4"),
 ];
 
 function isValidHour(hour) {
@@ -58,9 +60,11 @@ const daysData = [
     new DayData("12/12", [
         new Activity(0, "00:00", "09:00"),
         new Activity(1, "09:00", "10:00"),
-        new Activity(0, "10:00", "10:15"),
-        new Activity(1, "10:15", "10:45"),
-        new Activity(0, "10:45", "23:59"),
+        new Activity(1, "10:15", "11:15"),
+        new Activity(2, "12:00", "13:00"),
+        new Activity(3, "14:05", "14:40"),
+        new Activity(1, "14:40", "15:30"),
+        new Activity(0, "15:30", "23:59"),
     ]),
     new DayData("14/12", [
         new Activity(0, "00:00", "09:00"),
@@ -75,7 +79,7 @@ const activities = document.getElementById("activities");
 getDayInterval(60 * 6, 60 * 18);//MINUTES_IN_DAY);
 // begin & end interval to show the activities
 function getDayInterval(beginInterval, endInterval) {
-    const intervalInMinutes = endInterval - beginInterval;
+    const intervalMinutes = endInterval - beginInterval;
 
     const daysDataInterval = JSON.parse(JSON.stringify(daysData));
     for (const dayData of daysDataInterval) {
@@ -116,16 +120,16 @@ function getDayInterval(beginInterval, endInterval) {
 
         const actsDiv = document.createElement("div");
         actsDiv.classList.add("activity");
-        actsDiv.innerText = dayData.activities;
 
-        actsDiv.innerText = "";
         for (const activity of dayData.activities) {
             const actDiv = document.createElement("div");
-            const t = activity.durationMinutes / intervalInMinutes;
+            const w = activity.durationMinutes / intervalMinutes;
+            const x = (activity.beginMinutes - beginInterval) / intervalMinutes;
 
             actDiv.style = `
+            left: ${100*x}%;
             background-color:${activityTypes[activity.id].color};
-            width:${100*t}%;`;
+            width:${100*w}%;`;
 
             actsDiv.appendChild(actDiv);
         }

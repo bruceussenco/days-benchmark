@@ -39,11 +39,12 @@ body {
     height: 16px;
 }
 
-.activity > * {
-    height: 100%;
+.activity {
+    position: relative;
 }
 
-.blue  {background-color: blue;}
-.white {background-color: white;}
-.red   {background-color: red;}
+.activity > * {
+    position: absolute;
+    height: 100%;
+}
 
