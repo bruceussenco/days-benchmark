@@ -8,18 +8,39 @@
 <body>
     <div id="entry">
         <div id="day-editor">
-            <h1>Add Day</h1>
-            <div>
-                <label>Day:</label>
-                <input type="number" />
+            <div id="add-day">
+                <h1>Add Day</h1>
+                <div>
+                    <label>Day:</label>
+                    <input type="number" min=1 max=31 />
+                </div>
+                <div>
+                    <label>Month:</label>
+                    <input type="number" min=1 max=12 />
+                </div>
+                <button>Add Day</button>
             </div>
-            <div>
-                <label>Month:</label>
-                <input type="number" />
-            </div>
-            <button>Add Day</button>
+            <!-- <div id="mod-day">
+                <h1>Modify Day</h1>
+            </div> -->
         </div>
-        <div id="activity-editor"></div>
+        <div id="activity-editor">
+            <div id="add-activity">
+                <h1>Add Activity</h1>
+                <div>
+                    <label>Name:</label>
+                    <input type="text" />
+                </div>
+                <div>
+                    <label>Color:</label>
+                    <input type="color" />
+                </div>
+                <button>Add Activity</button>
+            </div>
+            <!-- <div id="mod-activity">
+                <h1>Modify Activity</h1>
+            </div> -->
+        </div>
     </div>
     <div id="days"></div>
     <div id="activities"></div>

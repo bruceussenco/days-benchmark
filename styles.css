@@ -29,10 +29,22 @@ body {
 #day-editor, #activity-editor  {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     width: 400px;
     height: 50%;
     padding: 8px;
     background-color: var(--light-gray);
+}
+
+#add-day, #mod-day, #add-activity, #mod-activity {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    > div {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
 }
 
 #days, #activities {
