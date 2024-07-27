@@ -62,9 +62,8 @@ const daysData = [
         new Activity(2, "13:00", "14:00"),
         new Activity(0, "15:00", "16:00"),
         new Activity(1, "17:00", "18:00"),
-        new Activity(2, "19:00", "20:00"),
-        new Activity(0, "21:00", "22:00"),
-        new Activity(1, "23:00", "23:59"),
+        new Activity(2, "19:00", "22:00"),
+        new Activity(0, "23:00", "23:59"),
     ]),
     new DayData("14/12", [
         new Activity(1, "08:30", "09:30"),
@@ -81,9 +80,12 @@ const daysData = [
 const days = document.getElementById("days");
 const activities = document.getElementById("activities");
 
-getDayInterval(60 * 8, 60 * 24);//MINUTES_IN_DAY);
+let currBeginInterval = 60 * 8;
+let currEndInterval = 60 * 24;
+
+showDayInterval(currBeginInterval, currEndInterval);
 // begin & end interval to show the activities
-function getDayInterval(beginInterval, endInterval) {
+function showDayInterval(beginInterval, endInterval) {
     const intervalMinutes = endInterval - beginInterval;
 
     const daysDataInterval = JSON.parse(JSON.stringify(daysData));
@@ -117,6 +119,8 @@ function getDayInterval(beginInterval, endInterval) {
         }
     }
 
+    days.innerHTML = "";
+    activities.innerHTML = "";
     for (const dayData of daysDataInterval) {
         const dayDiv = document.createElement("div");
         dayDiv.classList.add("day");
@@ -130,6 +134,12 @@ function getDayInterval(beginInterval, endInterval) {
             const w = activity.durationMinutes / intervalMinutes;
             const x = (activity.beginMinutes - beginInterval) / intervalMinutes;
 
+            actDiv.innerHTML = `
+            <div class="begin-point"></div>
+            <div class="end-point"></div>
+            <div class="dash"></div>
+            `;
+
             actDiv.style = `
             left: ${100*x}%;
             background-color:${activityTypes[activity.id].color};
@@ -142,4 +152,28 @@ function getDayInterval(beginInterval, endInterval) {
         activities.appendChild(actsDiv);
     }
 }
+
+function isValidDay(dayStr, monthStr) {
+    const day = parseInt(dayStr);
+    const month = parseInt(monthStr);
+
+    if (isNaN(day) || isNaN(month)) return false;
+    if (day < 1 || day > 31) return false;
+    if (month < 1 || month > 12) return false;
+    return true;
+}
+
+const dayInput = document.getElementById("day-input");
+const monthInput = document.getElementById("month-input");
+const addDayButton = document.getElementById("add-day-button");
+addDayButton.addEventListener("click", () => {
+    let dayStr = dayInput.value;
+    let monthStr = monthInput.value;
+    if (isValidDay(dayStr, monthStr)) {
+        if (dayStr.length === 1) dayStr = "0" + dayStr;
+        if (monthStr.length === 1) monthStr = "0" + monthStr;
+        daysData.push(new DayData(dayStr + "/" + monthStr, []));
+        showDayInterval(currBeginInterval, currEndInterval);
+    }
+});
 
