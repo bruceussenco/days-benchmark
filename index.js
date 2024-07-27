@@ -71,7 +71,7 @@ const daysData = [
 const days = document.getElementById("days");
 const activities = document.getElementById("activities");
 
-getDayInterval(60 * 6, 60 * 18);//MINUTES_IN_DAY);
+getDayInterval(60 * 11, 60 * 15);//MINUTES_IN_DAY);
 // begin & end interval to show the activities
 function getDayInterval(beginInterval, endInterval) {
     const intervalMinutes = endInterval - beginInterval;
@@ -79,35 +79,30 @@ function getDayInterval(beginInterval, endInterval) {
     const daysDataInterval = JSON.parse(JSON.stringify(daysData));
     for (const dayData of daysDataInterval) {
         // remove everything before beginInterval
-        let ended = false;
-        while (!ended) {
-            if (dayData.activities[0].endMinutes <= beginInterval) {
-                dayData.activities.shift();
-            } else {
-                if (dayData.activities[0].beginMinutes < beginInterval) {
-                    dayData.activities[0].beginMinutes = beginInterval;
-                    dayData.activities[0].durationMinutes
-                        = dayData.activities[0].endMinutes
-                        - dayData.activities[0].beginMinutes;
-                }
-                ended = true;
+        for (let i = 0; i < dayData.activities.length; i++) {
+            if (dayData.activities[i].endMinutes <= beginInterval) {
+                dayData.activities.splice(i, 1);
+                i--;
+                continue;
+            } else if (dayData.activities[i].beginMinutes < beginInterval) {
+                dayData.activities[0].beginMinutes = beginInterval;
+                dayData.activities[0].durationMinutes
+                    = dayData.activities[0].endMinutes
+                    - dayData.activities[0].beginMinutes;
             }
         }
 
         // remove everything after endInterval
-        ended = false;
-        while (!ended) {
-            const len = dayData.activities.length;
-            if (dayData.activities[len-1].beginMinutes >= endInterval) {
-                dayData.activities.pop();
-            } else {
-                if (dayData.activities[len-1].endMinutes > endInterval) {
-                    dayData.activities[len-1].endMinutes = endInterval;
-                    dayData.activities[len-1].durationMinutes
-                        = dayData.activities[len-1].endMinutes
-                        - dayData.activities[len-1].beginMinutes;
-                }
-                ended = true;
+        for (let i = 0; i < dayData.activities.length; i++) {
+            if (dayData.activities[i].beginMinutes >= endInterval) {
+                dayData.activities.splice(i, 1);
+                i--;
+                continue;
+            } else if (dayData.activities[i].endMinutes > endInterval) {
+                dayData.activities[i].endMinutes = endInterval;
+                dayData.activities[i].durationMinutes
+                    = dayData.activities[i].endMinutes
+                    - dayData.activities[i].beginMinutes;
             }
         }
     }
@@ -124,7 +119,6 @@ function getDayInterval(beginInterval, endInterval) {
             const actDiv = document.createElement("div");
             const w = activity.durationMinutes / intervalMinutes;
             const x = (activity.beginMinutes - beginInterval) / intervalMinutes;
-            console.log("(" + activity.beginMinutes + " - " + beginInterval + ") / " + intervalMinutes + " = " + x);
 
             actDiv.style = `
             left: ${100*x}%;
