@@ -58,20 +58,30 @@ const MINUTES_IN_DAY = 24 * 60;
 const daysData = [
     new DayData("12/12", [
         new Activity(0, "09:00", "10:00"),
-        new Activity(0, "10:15", "11:15"),
-        new Activity(1, "12:00", "13:00"),
-        new Activity(2, "14:05", "14:40"),
-        new Activity(0, "14:40", "15:30"),
+        new Activity(1, "11:00", "12:00"),
+        new Activity(2, "13:00", "14:00"),
+        new Activity(0, "15:00", "16:00"),
+        new Activity(1, "17:00", "18:00"),
+        new Activity(2, "19:00", "20:00"),
+        new Activity(0, "21:00", "22:00"),
+        new Activity(1, "23:00", "23:59"),
     ]),
     new DayData("14/12", [
-        new Activity(0, "09:00", "11:00"),
+        new Activity(1, "08:30", "09:30"),
+        new Activity(2, "10:30", "11:30"),
+        new Activity(0, "12:30", "13:30"),
+        new Activity(1, "14:30", "15:30"),
+        new Activity(2, "16:30", "17:30"),
+        new Activity(0, "18:30", "19:30"),
+        new Activity(1, "20:30", "21:30"),
+        new Activity(2, "22:30", "23:30"),
     ]),
 ];
 
 const days = document.getElementById("days");
 const activities = document.getElementById("activities");
 
-getDayInterval(60 * 11, 60 * 15);//MINUTES_IN_DAY);
+getDayInterval(60 * 8, 60 * 24);//MINUTES_IN_DAY);
 // begin & end interval to show the activities
 function getDayInterval(beginInterval, endInterval) {
     const intervalMinutes = endInterval - beginInterval;
